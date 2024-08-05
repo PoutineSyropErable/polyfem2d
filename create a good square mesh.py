@@ -1,4 +1,5 @@
 import numpy as np
+import meshio
 import polyscope as ps
 
 # Define grid dimensions
@@ -29,8 +30,19 @@ for i in range(n):
 
 faces = np.array(faces, dtype=np.int32)
 
+# Save to OBJ file using meshio
+mesh = meshio.Mesh(points=vertices, cells=[("triangle", faces)])
+meshio.write("grid_mesh.obj", mesh)
+
 # Initialize Polyscope
 ps.init()
+
+# Load the mesh from the OBJ file
+mesh = meshio.read("grid_mesh.obj")
+
+# Extract vertices and faces
+vertices = mesh.points
+faces = mesh.cells_dict["triangle"]
 
 # Register the mesh with Polyscope
 ps_mesh = ps.register_surface_mesh("2D Grid", vertices, faces)
