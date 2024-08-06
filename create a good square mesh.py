@@ -15,6 +15,7 @@ vertices = np.array(vertices, dtype=np.float32)
 
 # Create faces (triangles) for each square
 faces = []
+k = 0
 for i in range(n):
     for j in range(n):
         # Indices of the vertices for the current square
@@ -22,11 +23,18 @@ for i in range(n):
         v1 = v0 + 1
         v2 = v0 + (n + 1)
         v3 = v2 + 1
+        center = (vertices[v0]+vertices[v1]+vertices[v2]+vertices[v3])/4
+        
+        print(k, center)
+                
         
         # First triangle
         faces.append([v0, v1, v2])
         # Second triangle
         faces.append([v1, v3, v2])
+        k+=2
+
+
 
 faces = np.array(faces, dtype=np.int32)
 
