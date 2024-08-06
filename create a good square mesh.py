@@ -1,6 +1,5 @@
 import numpy as np
 import meshio
-import polyscope as ps
 
 # Define grid dimensions
 n = 10
@@ -9,13 +8,12 @@ n = 10
 vertices = []
 for i in range(n + 1):
     for j in range(n + 1):
-        vertices.append([i / n, j / n, 0])
+        vertices.append([i / n, j / n])
 
 vertices = np.array(vertices, dtype=np.float32)
 
 # Create faces (triangles) for each square
 faces = []
-k = 0
 for i in range(n):
     for j in range(n):
         # Indices of the vertices for the current square
@@ -23,37 +21,15 @@ for i in range(n):
         v1 = v0 + 1
         v2 = v0 + (n + 1)
         v3 = v2 + 1
-        center = (vertices[v0]+vertices[v1]+vertices[v2]+vertices[v3])/4
-        
-        print(k, center)
-                
         
         # First triangle
         faces.append([v0, v1, v2])
         # Second triangle
         faces.append([v1, v3, v2])
-        k+=2
-
-
 
 faces = np.array(faces, dtype=np.int32)
 
-# Save to OBJ file using meshio
+# Save to VTK file using meshio
 mesh = meshio.Mesh(points=vertices, cells=[("triangle", faces)])
-meshio.write("grid_mesh.obj", mesh)
+meshio.write("grid_mesh.vtk", mesh)
 
-# Initialize Polyscope
-ps.init()
-
-# Load the mesh from the OBJ file
-mesh = meshio.read("grid_mesh.obj")
-
-# Extract vertices and faces
-vertices = mesh.points
-faces = mesh.cells_dict["triangle"]
-
-# Register the mesh with Polyscope
-ps_mesh = ps.register_surface_mesh("2D Grid", vertices, faces)
-
-# Show the mesh
-ps.show()
