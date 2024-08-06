@@ -30,6 +30,6 @@ for i in range(n):
 faces = np.array(faces, dtype=np.int32)
 
 # Save to VTK file using meshio
-mesh = meshio.Mesh(points=vertices, cells=[("triangle", faces)])
-meshio.write("grid_mesh.vtk", mesh)
+mesh = meshio.Mesh(vertices,faces)
+meshio.write("grid_mesh.obj", mesh)
 
